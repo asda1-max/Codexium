@@ -8,7 +8,7 @@ if __name__ == "__main__":
     app = QTW.QApplication(sys.argv)
     app.setStyleSheet(gCON.loadStyleSheet())
     widget = view.loginPAGE.loginGUI()
-    widget.setFixedSize(800,600)
+    widget.setFixedSize(1200,800)
     widget.show()
 
     sys.exit(app.exec())        

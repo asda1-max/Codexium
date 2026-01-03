@@ -30,7 +30,6 @@ QWidget
 
 }
 
-
 /*-----QLabel-----*/
 QLabel
 {
