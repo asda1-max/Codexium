@@ -168,6 +168,42 @@ QPushButton
 
 }
 
+QPushButton[role = "reset"]
+{
+	background-color: #ff606a;
+	color: #ffffff;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 3px;
+	border-color: #051a39;
+	padding: 5px;
+
+}
+
+QPushButton[role = "reset"]::hover
+{
+	background-color: #6f272c;
+	color: #ffffff;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 3px;
+	border-color: #051a39;
+	padding: 5px;
+
+}
+
+QPushButton[role = "reset"]::pressed
+{
+	background-color: #300909;
+	color: #ffffff;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 3px;
+	border-color: #051a39;
+	padding: 5px;
+
+}
+
 
 QPushButton::disabled
 {
