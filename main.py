@@ -1,5 +1,5 @@
 import sys
-import view.loginPAGE
+import view.page_switcher
 import control.graphicController as gCON
 import PySide6.QtWidgets as QTW
 
@@ -7,7 +7,7 @@ import PySide6.QtWidgets as QTW
 if __name__ == "__main__":
     app = QTW.QApplication(sys.argv)
     app.setStyleSheet(gCON.loadStyleSheet())
-    widget = view.loginPAGE.loginGUI()
+    widget = view.page_switcher.page_switcher()
     widget.setFixedSize(1200,800)
     widget.show()
 

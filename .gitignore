@@ -1,0 +1,5 @@
+view/__pycache__/
+model/__pycache__/
+control/__pycache__/
+
+test_DB.db
