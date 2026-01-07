@@ -10,7 +10,7 @@ class page_switcher(QTW.QWidget):
         super().__init__()
         self.stackWidget = QTW.QStackedWidget()
         self.stackWidget.addWidget(view.loginPAGE.loginGUI())
-        self.stackWidget.addWidget(view.registerPAGE.loginGUI())
+        self.stackWidget.addWidget(view.registerPAGE.regisGUI())
         self.layouts = QTW.QVBoxLayout(self)
         self.layouts.addWidget(self.stackWidget)
     

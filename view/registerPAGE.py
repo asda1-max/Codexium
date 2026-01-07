@@ -1,9 +1,10 @@
 import sys
+import control.registerControl as regisControl
 from PySide6 import QtCore as QTC
 from PySide6 import QtWidgets as QTW
 from PySide6 import QtGui as QTUI
 
-class loginGUI(QTW.QWidget):
+class regisGUI(QTW.QWidget):
     def __init__(self):
         super().__init__()
 
@@ -23,6 +24,7 @@ class loginGUI(QTW.QWidget):
 
         self.button_regis = QTW.QPushButton(text="Register Now!")
         self.button_regis.setFixedSize(300,40)
+        self.button_regis.clicked.connect(self.registerAccount)
 
         self.button_reset = QTW.QPushButton(text="Reset")
         self.button_reset.setFixedSize(300,40)
@@ -76,3 +78,5 @@ class loginGUI(QTW.QWidget):
     def change_page(self):
         self.parentWidget().setCurrentIndex(0)
         
+    def registerAccount(self):
+        regisControl.registerThis(self.usernameBox.text(), self.passwordBox.text())
