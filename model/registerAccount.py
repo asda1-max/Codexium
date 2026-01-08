@@ -60,9 +60,9 @@ class Register():
         aad = self.userid.bytes
         key = self.mek_key_by_user_password
         chacha = ChaCha20Poly1305(key)
-        nonce = os.urandom(12)
+        self.nonce = os.urandom(12)
 
-        self.encrypted_mek_key = chacha.encrypt(nonce, data, aad)
+        self.encrypted_mek_key = chacha.encrypt(self.nonce, data, aad)
     
     def generate_recovery_key(self, length_of_key):
         """
@@ -74,22 +74,15 @@ class Register():
         allowedWords = string.ascii_lowercase + string.digits + string.ascii_uppercase
         self.recovery_code = ''.join(random.choices(allowedWords, k=length_of_key))
     
-    def connect_database(self):
-        self.connection = sqlite3.connect("test_DB.db")
+    def connect_database(self, database_name):
+        self.connection = sqlite3.connect(database_name)
         self.current = self.connection.cursor()
     
-    def create_database(self):
-        self.connect_database()
-        self.current.execute("create table user(username, pw_verifier, encrypted_mek_key)")
-        
-    
     def register_data(self):
-        self.connect_database()
-        self.current.execute("insert into user values (?, ?, ?)", (self.username, self.login_password_verifier, self.encrypted_mek_key))
+        self.current.execute("insert into user_data values (?, ?, ?, ?, ?, ?, ?)", (str(self.userid), self.username, self.salt_login, self.login_password_verifier, self.salt_MEK, self.nonce, self.encrypted_mek_key))
         self.connection.commit()
         
     def view_data(self):
-        self.connect_database()
         res = self.current.execute("SELECT * from user")
         print(res.fetchall())
     
@@ -97,6 +90,20 @@ class Register():
         self.connection.close()
 
             
-    
+def create_database(database_name):
+        connection = sqlite3.connect(database_name)
+        current = connection.cursor()
+        current.execute("create table user_data(" \
+        "uuid, " \
+        "username, " \
+        "login_salt, " \
+        "pw_verifier, " \
+        "mek_salt,"\
+        "nonce," \
+        "encrypted_mek_key" \
+        ")"
+        )
+        connection.close()
+
 
 

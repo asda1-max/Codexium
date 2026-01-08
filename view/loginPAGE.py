@@ -20,6 +20,7 @@ class loginGUI(QTW.QWidget):
         self.label_password = QTW.QLabel(text="Password : ")
 
         self.passwordBox = QTW.QLineEdit(placeholderText="Password")
+        self.passwordBox.setEchoMode(QTW.QLineEdit.Password)
         self.passwordBox.setFixedSize(700,40)
 
         self.button_login = QTW.QPushButton(text="Login")

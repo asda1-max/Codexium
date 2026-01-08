@@ -20,6 +20,7 @@ class regisGUI(QTW.QWidget):
         self.label_password = QTW.QLabel(text="Password : ")
 
         self.passwordBox = QTW.QLineEdit(placeholderText="Password")
+        self.passwordBox.setEchoMode(QTW.QLineEdit.Password)
         self.passwordBox.setFixedSize(700,40)
 
         self.button_regis = QTW.QPushButton(text="Register Now!")
@@ -27,6 +28,7 @@ class regisGUI(QTW.QWidget):
         self.button_regis.clicked.connect(self.registerAccount)
 
         self.button_reset = QTW.QPushButton(text="Reset")
+        self.button_reset.clicked.connect(self.clear_box)
         self.button_reset.setFixedSize(300,40)
         self.button_reset.setProperty("role","reset")
 
@@ -74,9 +76,14 @@ class regisGUI(QTW.QWidget):
         self.Hlayout_login.setAlignment(QTC.Qt.AlignCenter)
         self.Vlayout.addLayout(self.Hlayout_login)
         self.Vlayout.setAlignment(QTC.Qt.AlignTop)
+    
+    def clear_box(self):
+        self.passwordBox.setText("")
+        self.usernameBox.setText("")
 
     def change_page(self):
         self.parentWidget().setCurrentIndex(0)
         
     def registerAccount(self):
         regisControl.registerThis(self.usernameBox.text(), self.passwordBox.text())
+        self.clear_box()
