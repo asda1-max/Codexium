@@ -81,10 +81,6 @@ class Register():
     def register_data(self):
         self.current.execute("insert into user_data values (?, ?, ?, ?, ?, ?, ?)", (str(self.userid), self.username, self.salt_login, self.login_password_verifier, self.salt_MEK, self.nonce, self.encrypted_mek_key))
         self.connection.commit()
-        
-    def view_data(self):
-        res = self.current.execute("SELECT * from user")
-        print(res.fetchall())
     
     def close_database(self):
         self.connection.close()
@@ -105,5 +101,11 @@ def create_database(database_name):
         )
         connection.close()
 
-
+def view_data(username,database_name):
+        connection = sqlite3.connect(database_name)
+        current = connection.cursor()
+        res = current.execute("SELECT username from user_data where username = ?", (username,))
+        result = res.fetchall()
+        connection.close()
+        return result
 
