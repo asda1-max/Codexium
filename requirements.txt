@@ -1,0 +1,3 @@
+PySide6
+argon2-cffi
+cryptography
