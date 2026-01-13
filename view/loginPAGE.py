@@ -1,5 +1,6 @@
 import sys
 import view.page_switcher
+from control import loginControl
 from PySide6 import QtCore as QTC
 from PySide6 import QtWidgets as QTW
 from PySide6 import QtGui as QTUI
@@ -24,6 +25,7 @@ class loginGUI(QTW.QWidget):
         self.passwordBox.setFixedSize(700,40)
 
         self.button_login = QTW.QPushButton(text="Login")
+        self.button_login.clicked.connect(self.loginThis)
         self.button_login.setFixedSize(300,40)
 
         self.button_reset = QTW.QPushButton(text="Reset")
@@ -91,6 +93,12 @@ class loginGUI(QTW.QWidget):
         else:
             self.button_reveal.setText("Reveal")
             self.passwordBox.setEchoMode(QTW.QLineEdit.Password)
+
+    def loginThis(self):
+        username = self.usernameBox.text()
+        password = self.passwordBox.text()
+        loginControl.login(str(username), str(password))
+        self.parentWidget().setCurrentIndex(2)
 
 
         

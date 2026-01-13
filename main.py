@@ -8,7 +8,7 @@ if __name__ == "__main__":
     app = QTW.QApplication(sys.argv)
     app.setStyleSheet(gCON.loadStyleSheet())
     widget = view.page_switcher.page_switcher()
-    widget.setFixedSize(1200,800)
+    widget.setFixedSize(1650,800)
     widget.show()
 
     sys.exit(app.exec())        
