@@ -32,6 +32,11 @@ class regisGUI(QTW.QWidget):
         self.button_reset.setFixedSize(300,40)
         self.button_reset.setProperty("role","reset")
 
+        self.button_reveal = QTW.QPushButton(text="Reveal")
+        self.button_reveal.clicked.connect(self.reveal_password_box)
+        self.button_reveal.setFixedSize(120,40)
+        self.button_reveal.setProperty("role","reset")
+
         self.login_label = QTW.QLabel(text="Already have an account?")
         self.login_button = QTW.QPushButton(text="Login")
         self.login_button.clicked.connect(self.change_page)
@@ -66,6 +71,7 @@ class regisGUI(QTW.QWidget):
         self.Hlayout_button : QTW.QHBoxLayout = QTW.QHBoxLayout()
         self.Hlayout_button.addWidget(self.button_regis,alignment= QTC.Qt.AlignHCenter)
         self.Hlayout_button.addWidget(self.button_reset,alignment= QTC.Qt.AlignHCenter)
+        self.Hlayout_button.addWidget(self.button_reveal,alignment= QTC.Qt.AlignHCenter)
         self.Hlayout_button.setAlignment(QTC.Qt.AlignHCenter)
         self.Vlayout.addLayout(self.Hlayout_button)
 
@@ -87,3 +93,11 @@ class regisGUI(QTW.QWidget):
     def registerAccount(self):
         regisControl.registerThis(self.usernameBox.text(), self.passwordBox.text())
         self.clear_box()
+
+    def reveal_password_box(self):
+        if self.button_reveal.text() == "Reveal" :
+            self.button_reveal.setText("Hide")
+            self.passwordBox.setEchoMode(QTW.QLineEdit.Normal)
+        else:
+            self.button_reveal.setText("Reveal")
+            self.passwordBox.setEchoMode(QTW.QLineEdit.Password)
