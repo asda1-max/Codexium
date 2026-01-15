@@ -24,6 +24,7 @@ class Register():
         self.password = password
         self.userid = uuid.uuid4()
         self.mek = uuid.uuid4().bytes
+        print(self.mek)
         
 
     def generate_salt(self):
