@@ -2,10 +2,14 @@ from model import loginAccount
 import tkinter.messagebox as msgbox
 
 def login(username ,password):
-    loginOutput = loginAccount.check_data(username,password, "./data/userData.db")
+    login = loginAccount.login(username,password, "./data/userData.db")
+    login.check_data()
+
+    loginOutput, data = login.returnVar()
     if loginOutput != 0:
         msgbox.showinfo("Info", "Benar login")
-        print(loginOutput)
-        return True
+        print("data : " ,data)
+        return True, data
     else:
         msgbox.showerror("Info", "Salah login")
+        return False, None
