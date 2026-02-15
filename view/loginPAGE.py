@@ -97,7 +97,8 @@ class loginGUI(QTW.QWidget):
     def loginThis(self):
         username = self.usernameBox.text()
         password = self.passwordBox.text()
-        if loginControl.login(str(username), str(password)) == True:
+        con, data = loginControl.login(str(username), str(password))
+        if con == True:
             self.parentWidget().setCurrentIndex(2)
 
 

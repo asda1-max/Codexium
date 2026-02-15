@@ -69,7 +69,14 @@ class login():
 
                 connection.close()         
                 self.return_con = 1
-                self.decrypt_mek()
+
+                try:
+                        self.decrypt_mek()
+                except Exception as e:
+                        print(e)
+                        self.return_con = 0
+                        self.returnVar()
+
 
         #decrypt mek key
         #return : byte(data)

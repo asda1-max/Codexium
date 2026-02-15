@@ -15,17 +15,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QListView,
-    QPushButton, QSizePolicy, QTextEdit, QWidget)
+from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QListWidget,
+    QListWidgetItem, QPushButton, QSizePolicy, QTextEdit,
+    QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(1610, 771)
-        self.listView = QListView(Form)
-        self.listView.setObjectName(u"listView")
-        self.listView.setGeometry(QRect(20, 60, 261, 701))
         self.lineEdit = QLineEdit(Form)
         self.lineEdit.setObjectName(u"lineEdit")
         self.lineEdit.setGeometry(QRect(20, 10, 261, 41))
@@ -137,6 +135,9 @@ class Ui_Form(object):
         self.pushButton_3 = QPushButton(Form)
         self.pushButton_3.setObjectName(u"pushButton_3")
         self.pushButton_3.setGeometry(QRect(1410, 180, 181, 61))
+        self.listWidget = QListWidget(Form)
+        self.listWidget.setObjectName(u"listWidget")
+        self.listWidget.setGeometry(QRect(20, 60, 256, 701))
 
         self.retranslateUi(Form)
 
