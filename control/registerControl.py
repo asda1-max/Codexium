@@ -1,36 +1,49 @@
-import model.registerAccount as regis
-import tkinter.messagebox as msgbox
-
 import os
+import model.registerAccount as regis
+from PySide6.QtWidgets import QMessageBox
 
-def check_eligibility(username,password):
+
+def check_eligibility(username: str, password: str) -> bool:
+    """Validate registration input."""
     if len(username) < 6:
-        msgbox.showerror("Username are Too Short !", "Username are Too Short ! ")
+        QMessageBox.warning(None, "Username Too Short", "Username must be at least 6 characters.")
         return False
     if len(password) < 8:
-        msgbox.showerror("Password are Too Short !", "Password are Too Short !\nMinimum 8 Char ")
+        QMessageBox.warning(None, "Password Too Short", "Password must be at least 8 characters.")
         return False
     return True
 
-def registerThis(username,password):
+
+def registerThis(username: str, password: str) -> bool:
+    """
+    Register a new account.  Returns True on success.
+    """
     dataPath = "data/userData.db"
-    if check_eligibility(username,password) == True:
-        if os.path.exists(dataPath):
-            if regis.view_data(username,dataPath) != []:
-                msgbox.showerror("Multiple Entries Found !", "Multiple Entries Found\n ")
-            else:
-                regisAccount = regis.Register(username, password)
-                regisAccount.connect_database(dataPath)
-                regisAccount.generate_salt()
-                regisAccount.create_login_password_verifier()
-                regisAccount.create_mek_key_user_password()
-                regisAccount.encrypt_mek_key()
-                regisAccount.register_data()
-                regisAccount.close_database()
-                msgbox.showinfo("Success !", "Acount Successfully Created\n ")
-        else:
-            regis.create_database(dataPath)
-            registerThis(username,password)
-    
 
+    if not check_eligibility(username, password):
+        return False
 
+    # Create database file + table if it doesn't exist yet
+    if not os.path.exists(dataPath):
+        os.makedirs(os.path.dirname(dataPath), exist_ok=True)
+        regis.create_database(dataPath)
+
+    # Check for duplicate username
+    if regis.view_data(username, dataPath) != []:
+        QMessageBox.critical(None, "Username Taken", "An account with this username already exists.")
+        return False
+
+    try:
+        account = regis.Register(username, password)
+        account.connect_database(dataPath)
+        account.generate_salt()
+        account.create_login_password_verifier()
+        account.create_mek_key_user_password()
+        account.encrypt_mek_key()
+        account.register_data()
+        account.close_database()
+        QMessageBox.information(None, "Success", "Account successfully created!")
+        return True
+    except Exception as e:
+        QMessageBox.critical(None, "Registration Error", f"An error occurred:\n{e}")
+        return False

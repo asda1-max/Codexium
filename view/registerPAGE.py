@@ -4,100 +4,168 @@ from PySide6 import QtCore as QTC
 from PySide6 import QtWidgets as QTW
 from PySide6 import QtGui as QTUI
 
+
 class regisGUI(QTW.QWidget):
+    """Modern card-based registration page."""
+
     def __init__(self):
         super().__init__()
 
-        self.title = QTW.QLabel(text="REGISTER NOW !", alignment=QTC.Qt.AlignHCenter)
-        self.title.setFixedSize(800,60)
+        # ── brand header ─────────────────────────────────────────
+        self.brand_icon = QTW.QLabel("✨")
+        self.brand_icon.setStyleSheet("font-size: 48px;")
+        self.brand_icon.setAlignment(QTC.Qt.AlignHCenter)
+
+        self.brand_label = QTW.QLabel("Codexium")
+        self.brand_label.setProperty("role", "brand")
+        self.brand_label.setAlignment(QTC.Qt.AlignHCenter)
+
+        self.brand_sub = QTW.QLabel("Create your encrypted vault")
+        self.brand_sub.setProperty("role", "brand-sub")
+        self.brand_sub.setAlignment(QTC.Qt.AlignHCenter)
+
+        # ── title ────────────────────────────────────────────────
+        self.title = QTW.QLabel("Create Account")
         self.title.setProperty("role", "title")
+        self.title.setAlignment(QTC.Qt.AlignHCenter)
 
-        self.label_username = QTW.QLabel(text="Username : ")
+        self.subtitle = QTW.QLabel("Set up your secure credentials")
+        self.subtitle.setProperty("role", "brand-sub")
+        self.subtitle.setAlignment(QTC.Qt.AlignHCenter)
 
-        self.usernameBox = QTW.QLineEdit(placeholderText="Username")
-        self.usernameBox.setFixedSize(700,40)
+        # ── form fields ──────────────────────────────────────────
+        self.label_username = QTW.QLabel("USERNAME")
+        self.label_username.setProperty("role", "field-label")
 
-        self.label_password = QTW.QLabel(text="Password : ")
+        self.usernameBox = QTW.QLineEdit(placeholderText="Min. 6 characters")
+        self.usernameBox.setFixedHeight(44)
+        self.usernameBox.setMinimumWidth(380)
 
-        self.passwordBox = QTW.QLineEdit(placeholderText="Password")
+        self.label_password = QTW.QLabel("PASSWORD")
+        self.label_password.setProperty("role", "field-label")
+
+        self.passwordBox = QTW.QLineEdit(placeholderText="Min. 8 characters")
         self.passwordBox.setEchoMode(QTW.QLineEdit.Password)
-        self.passwordBox.setFixedSize(700,40)
+        self.passwordBox.setFixedHeight(44)
+        self.passwordBox.setMinimumWidth(380)
 
-        self.button_regis = QTW.QPushButton(text="Register Now!")
-        self.button_regis.setFixedSize(300,40)
+        # ── buttons ──────────────────────────────────────────────
+        self.button_regis = QTW.QPushButton("Create Account")
+        self.button_regis.setFixedHeight(44)
         self.button_regis.clicked.connect(self.registerAccount)
+        self.button_regis.setCursor(QTC.Qt.PointingHandCursor)
 
-        self.button_reset = QTW.QPushButton(text="Reset")
-        self.button_reset.clicked.connect(self.clear_box)
-        self.button_reset.setFixedSize(300,40)
-        self.button_reset.setProperty("role","reset")
-
-        self.button_reveal = QTW.QPushButton(text="Reveal")
+        self.button_reveal = QTW.QPushButton("👁  Show")
         self.button_reveal.clicked.connect(self.reveal_password_box)
-        self.button_reveal.setFixedSize(120,40)
-        self.button_reveal.setProperty("role","reset")
+        self.button_reveal.setFixedSize(90, 44)
+        self.button_reveal.setProperty("role", "secondary")
+        self.button_reveal.setCursor(QTC.Qt.PointingHandCursor)
 
-        self.login_label = QTW.QLabel(text="Already have an account?")
-        self.login_button = QTW.QPushButton(text="Login")
+        self.button_reset = QTW.QPushButton("Clear")
+        self.button_reset.clicked.connect(self.clear_box)
+        self.button_reset.setFixedSize(90, 44)
+        self.button_reset.setProperty("role", "ghost")
+        self.button_reset.setCursor(QTC.Qt.PointingHandCursor)
+
+        # ── login link ───────────────────────────────────────────
+        self.login_label = QTW.QLabel("Already have an account?")
+        self.login_label.setProperty("role", "brand-sub")
+
+        self.login_button = QTW.QPushButton("Sign in")
         self.login_button.clicked.connect(self.change_page)
-        self.login_button.setFixedSize(120,25)
         self.login_button.setProperty("role", "smaller")
+        self.login_button.setCursor(QTC.Qt.PointingHandCursor)
 
-        self.Vlayout: QTW.QVBoxLayout = QTW.QVBoxLayout(self)
-        self.Vlayout.setContentsMargins(12,50,12,8)
-        self.Vlayout.setSpacing(10)
-        
-        self.Vlayout.addSpacing(100)
-        self.Vlayout.addWidget(self.title, alignment = QTC.Qt.AlignHCenter)
-        
-        self.Vlayout.addSpacing(30)
-        self.Hlayout_username : QTW.QHBoxLayout = QTW.QHBoxLayout()
-        self.Hlayout_username.setContentsMargins(40,8,40,8)
-        self.Hlayout_username.setSpacing(20)
-        self.Hlayout_username.addWidget(self.label_username, alignment= QTC.Qt.AlignLeft)
-        self.Hlayout_username.addWidget(self.usernameBox, alignment= QTC.Qt.AlignHCenter)
-        self.Hlayout_username.setAlignment(QTC.Qt.AlignCenter)
-        self.Vlayout.addLayout(self.Hlayout_username)
+        # ══════════════════════════════════════════════════════════
+        # CARD LAYOUT
+        # ══════════════════════════════════════════════════════════
 
-        self.Hlayout_password : QTW.QHBoxLayout = QTW.QHBoxLayout()
-        self.Hlayout_password.setContentsMargins(40,8,40,8)
-        self.Hlayout_password.setSpacing(20)
-        self.Hlayout_password.addWidget(self.label_password, alignment= QTC.Qt.AlignLeft)
-        self.Hlayout_password.addWidget(self.passwordBox, alignment= QTC.Qt.AlignHCenter)
-        self.Hlayout_password.setAlignment(QTC.Qt.AlignCenter)
-        self.Vlayout.addLayout(self.Hlayout_password)
-        
-        self.Vlayout.addSpacing(20)
-        self.Hlayout_button : QTW.QHBoxLayout = QTW.QHBoxLayout()
-        self.Hlayout_button.addWidget(self.button_regis,alignment= QTC.Qt.AlignHCenter)
-        self.Hlayout_button.addWidget(self.button_reset,alignment= QTC.Qt.AlignHCenter)
-        self.Hlayout_button.addWidget(self.button_reveal,alignment= QTC.Qt.AlignHCenter)
-        self.Hlayout_button.setAlignment(QTC.Qt.AlignHCenter)
-        self.Vlayout.addLayout(self.Hlayout_button)
+        card = QTW.QWidget()
+        card.setProperty("role", "card")
+        card.setFixedWidth(480)
 
-        self.Vlayout.addSpacing(120)
-        self.Hlayout_login : QTW.QHBoxLayout =QTW.QHBoxLayout()
-        self.Hlayout_login.addWidget(self.login_label, alignment= QTC.Qt.AlignCenter)
-        self.Hlayout_login.addWidget(self.login_button, alignment= QTC.Qt.AlignCenter)
-        self.Hlayout_login.setAlignment(QTC.Qt.AlignCenter)
-        self.Vlayout.addLayout(self.Hlayout_login)
-        self.Vlayout.setAlignment(QTC.Qt.AlignTop)
-    
+        card_layout = QTW.QVBoxLayout(card)
+        card_layout.setContentsMargins(48, 40, 48, 40)
+        card_layout.setSpacing(6)
+
+        card_layout.addWidget(self.brand_icon)
+        card_layout.addWidget(self.brand_label)
+        card_layout.addWidget(self.brand_sub)
+        card_layout.addSpacing(28)
+        card_layout.addWidget(self.title)
+        card_layout.addWidget(self.subtitle)
+        card_layout.addSpacing(24)
+
+        # username field
+        card_layout.addWidget(self.label_username)
+        card_layout.addSpacing(4)
+        card_layout.addWidget(self.usernameBox)
+        card_layout.addSpacing(14)
+
+        # password field + reveal
+        card_layout.addWidget(self.label_password)
+        card_layout.addSpacing(4)
+        pw_row = QTW.QHBoxLayout()
+        pw_row.setSpacing(8)
+        pw_row.addWidget(self.passwordBox)
+        pw_row.addWidget(self.button_reveal)
+        card_layout.addLayout(pw_row)
+        card_layout.addSpacing(24)
+
+        # action buttons
+        btn_row = QTW.QHBoxLayout()
+        btn_row.setSpacing(10)
+        btn_row.addWidget(self.button_regis, 1)
+        btn_row.addWidget(self.button_reset)
+        card_layout.addLayout(btn_row)
+        card_layout.addSpacing(20)
+
+        # separator
+        sep = QTW.QFrame()
+        sep.setFrameShape(QTW.QFrame.HLine)
+        sep.setProperty("role", "separator")
+        card_layout.addWidget(sep)
+        card_layout.addSpacing(14)
+
+        # login link
+        login_row = QTW.QHBoxLayout()
+        login_row.setAlignment(QTC.Qt.AlignCenter)
+        login_row.addWidget(self.login_label)
+        login_row.addWidget(self.login_button)
+        card_layout.addLayout(login_row)
+
+        # ── Center the card in the page ──────────────────────────
+        outer = QTW.QVBoxLayout(self)
+        outer.setContentsMargins(0, 0, 0, 0)
+        outer.addStretch()
+        h_center = QTW.QHBoxLayout()
+        h_center.addStretch()
+        h_center.addWidget(card)
+        h_center.addStretch()
+        outer.addLayout(h_center)
+        outer.addStretch()
+
+    # ── actions ──────────────────────────────────────────────────
+
     def clear_box(self):
-        self.passwordBox.setText("")
-        self.usernameBox.setText("")
+        self.passwordBox.clear()
+        self.usernameBox.clear()
 
     def change_page(self):
         self.parentWidget().setCurrentIndex(0)
-        
+
     def registerAccount(self):
-        regisControl.registerThis(self.usernameBox.text(), self.passwordBox.text())
-        self.clear_box()
+        username = self.usernameBox.text().strip()
+        password = self.passwordBox.text()
+        success = regisControl.registerThis(username, password)
+        if success:
+            self.clear_box()
+            self.parentWidget().setCurrentIndex(0)
 
     def reveal_password_box(self):
-        if self.button_reveal.text() == "Reveal" :
-            self.button_reveal.setText("Hide")
+        if self.passwordBox.echoMode() == QTW.QLineEdit.Password:
+            self.button_reveal.setText("👁  Hide")
             self.passwordBox.setEchoMode(QTW.QLineEdit.Normal)
         else:
-            self.button_reveal.setText("Reveal")
+            self.button_reveal.setText("👁  Show")
             self.passwordBox.setEchoMode(QTW.QLineEdit.Password)

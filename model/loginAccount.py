@@ -29,18 +29,22 @@ class login():
 
                 try:
                         query = self.current.execute("SELECT pw_verifier from user_data where username = ?", (self.username,))
-                        self.pw_verifier = query.fetchone()[0]
+                        row = query.fetchone()
+                        if row is None:
+                                self.return_con = 0
+                                connection.close()
+                                return
+                        self.pw_verifier = row[0]
                 except Exception as e:
-                        print("error with id : 404", e)
-                        self.return_con = 404    
-                        self.returnVar()   
+                        self.return_con = 0
+                        connection.close()
+                        return
                 try:
                         PasswordHasher().verify(self.pw_verifier, self.password)
-                        print("Password verified successfully")
                 except Exception as e:
-                        print("Invalid password")
                         self.return_con = 0
-                        self.returnVar()
+                        connection.close()
+                        return
 
                 connection.close()
                 self.fetch_info()
@@ -51,7 +55,6 @@ class login():
         def fetch_info(self):
                 connection = sqlite3.connect(self.database_name)
                 self.current = connection.cursor()
-                print("fetch info")
                 try:
                         query = self.current.execute("SELECT mek_salt from user_data where username = ?", (self.username,))
                         self.salt_MEK = query.fetchone()[0]
@@ -61,27 +64,22 @@ class login():
                         self.userid = query.fetchone()[0]
                         query = self.current.execute("SELECT nonce from user_data where username = ?", (self.username,))
                         self.nonce = query.fetchone()[0]
-
                 except Exception as e:
-                        print("error : ", e)
-                        self.return_con = 404
-                        self.returnVar()
+                        self.return_con = 0
+                        connection.close()
+                        return
 
-                connection.close()         
-                self.return_con = 1
+                connection.close()
 
                 try:
                         self.decrypt_mek()
                 except Exception as e:
-                        print(e)
                         self.return_con = 0
-                        self.returnVar()
 
 
         #decrypt mek key
         #return : byte(data)
         def decrypt_mek(self):
-                print("decrypt")
                 mek_key_by_user_password = hash_password_raw(
                 password= self.password.encode(),
                 salt= self.salt_MEK,
@@ -96,13 +94,10 @@ class login():
                 chacha = ChaCha20Poly1305(key)
 
                 decrypt_mek = chacha.decrypt(self.nonce, data, aad)
-                print("decrypted data : ", decrypt_mek)
                 self.data = decrypt_mek
                 self.return_con = 1
 
         def returnVar(self):
-                print("returnvar")
-                if self.data == None :
+                if self.data is None:
                         self.data = "NO FETCHED DATA"
-                print(self.return_con, self.data)
                 return self.return_con, self.data
